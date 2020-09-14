@@ -58,9 +58,6 @@ function createWindow() {
       enableRemoteModule: true
     }
   })
-  if (isMac) {
-    mainWindow.setVibrancy("dark")
-  }
   mainWindow.loadFile('src/index.html');
   mainWindow.on('closed', () => {
     mainWindow = null;
