@@ -1,0 +1,14 @@
+{
+  "name": "beatsave",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/js/node.js",
+  "scripts": {
+    "start": "npx electron ."
+  },
+  "author": "Scribble Nerd",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^9.1.2"
+  }
+}
