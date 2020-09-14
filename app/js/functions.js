@@ -5,6 +5,9 @@ function setInnerHTML(id, html, callback) {
   }
 }
 
-function locationPrompt() {
-  location.replace('')
+function updateConfig(callback) {
+  mainProcess.updateConfig((json) => {
+    config = json
+    callback()
+  })
 }
