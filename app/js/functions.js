@@ -4,3 +4,7 @@ function setInnerHTML(id, html, callback) {
     callback()
   }
 }
+
+function locationPrompt() {
+  location.replace('')
+}
