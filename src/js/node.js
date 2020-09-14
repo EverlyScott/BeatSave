@@ -1,5 +1,5 @@
 const electron = require('electron')
-const { shell } = require('electron')
+const { shell, dialog } = require('electron')
 const fs = require('fs');
 const app = electron.app;
 const Menu = electron.Menu;
@@ -58,7 +58,7 @@ function createWindow() {
       enableRemoteModule: true
     }
   })
-  mainWindow.loadFile('src/index.html');
+  mainWindow.loadFile('app/index.html');
   mainWindow.on('closed', () => {
     mainWindow = null;
   })
@@ -71,4 +71,19 @@ function updateConfig() {
 exports.updateConfig = (callback) => {
   updateConfig()
   callback(config)
+}
+
+exports.selectGameFolder = (callback) => {
+  dialog.showOpenDialog({
+    properties: ['openDirectory']
+  }).then((folder) => {
+    callback(folder.filePaths[0])
+  })
+}
+
+exports.writeConfig = (newconfig, callback) => {
+  fs.writeFile(`${appdata}/beatsave/config.json`, JSON.stringify(newconfig), () => {
+    updateConfig()
+    callback(config)
+  })
 }
