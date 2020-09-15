@@ -21,9 +21,20 @@ body {
 .button.blue {
   color: #ffffff;
   background-color: #6079b9;
-  padding: 10px 20px 5px 20px;
+  padding: 10px 20px 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.button.blue.disabled {
+  background-color: #aebcdc
 }
 
 .button.blue:hover {
   background-color: #405fab;
+}
+
+.button.blue.disabled:hover {
+  background-color: #9faed5;
+  cursor: not-allowed;
 }

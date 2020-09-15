@@ -12,9 +12,17 @@ mainProcess.updateConfig((newconfig) => {
 
 function openfolderselection() {
   mainProcess.selectGameFolder((folder) => {
-    config.installationLocation = folder
-    mainProcess.writeConfig(config, () => {
-      document.getElementById('a').innerHTML = config
-    })
+    if (folder != undefined) {
+      config.installationLocation = folder
+      mainProcess.writeConfig(config, () => {
+        document.getElementById('path').innerHTML = folder
+        document.getElementById('continue').classList = "button blue"
+        document.getElementById('continue').setAttribute('onclick', 'continuebutton()')
+      })
+    }
   })
+}
+
+function continuebutton() {
+  location.replace('../index.html')
 }
