@@ -13,16 +13,19 @@ function changePage(page) {
       break;
 
     case 'dlplaylists':
+      pageiframe.src = 'dlplaylists/index.html'
       resetPageColors()
       dlplaylists.classList = 'page selected'
       break;
 
     case 'bssongs':
+      pageiframe.src = 'bssongs/index.html'
       resetPageColors()
       bssongs.classList = 'page selected'
       break;
 
     case 'bsplaylists':
+      pageiframe.src = 'bsplaylists/index.html'
       resetPageColors()
       bsplaylists.classList = 'page selected'
       break;
