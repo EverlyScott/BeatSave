@@ -7,12 +7,32 @@ body {
 }
 
 .sidepanel {
-  width: calc(250px - 30px);
+  width: 220px;
   height: calc(100vh - 50px);
   background-color: #cccccc;
   padding: 25px 15px 25px 15px;
+  font-size: 17px;
 }
 
 .sidepanel .page {
+  cursor: pointer;
+  margin: 10px 0 10px 0;
   padding-left: 15px;
+}
+
+.sidepanel .page.selected {
+  color: #2a4da3;
+}
+
+.sidepanel .category {
+  padding-top: 10px
+}
+
+#pageiframe {
+  border: none;
+  position: absolute;
+  top: 0px;
+  left: 250px;
+  width: calc(100% - 250px);
+  height: 100vh;
 }

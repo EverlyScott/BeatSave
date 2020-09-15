@@ -6,12 +6,24 @@
   </head>
   <body>
     <div class="sidepanel">
-      <p>Library</p>
-      <div class="page">
+      <p class="category">Downloaded</p>
+      <div id="dlsongs" class="page" onclick="changePage('dlsongs')">
         <i class="fas fa-music"></i> Songs
       </div>
+      <div id="dlplaylists" class="page" onclick="changePage('dlplaylists')">
+        <i class="fas fa-list-music"></i> Playlists
+      </div>
+      <p class="category">BeatSaver</p>
+      <div id="bssongs" class="page" onclick="changePage('bssongs')">
+        <i class="fas fa-music"></i> Songs
+      </div>
+      <div id="bsplaylists" class="page" onclick="changePage('bsplaylists')">
+        <i class="fas fa-list-music"></i> Playlists
+      </div>
     </div>
+    <iframe id="pageiframe" src=""></iframe>
 
+    <script src="js/pages.js"></script>
     <script src="js/api.js"></script>
     <script src="js/main.js"></script>
   </body>
