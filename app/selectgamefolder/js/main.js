@@ -10,6 +10,8 @@ mainProcess.updateConfig((newconfig) => {
 function openfolderselection() {
   mainProcess.selectGameFolder((folder) => {
     config.installationLocation = folder
-    mainProcess.writeConfig(config)
+    mainProcess.writeConfig(config, () => {
+      document.getElementById('a').innerHTML = config
+    })
   })
 }
