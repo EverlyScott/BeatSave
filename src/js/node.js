@@ -87,3 +87,14 @@ exports.writeConfig = (newconfig, callback) => {
     callback(config)
   })
 }
+
+exports.loadSongHashes = (callback) => {
+  updateConfig()
+  const songs = fs.readdirSync(`${config.installationLocation}\\Beat Saber_Data\\CustomLevels`)
+  var hashes = []
+  for (var i = 0; i < songs.length; i++) {
+    const metadata = JSON.parse(fs.readFileSync(`${config.installationLocation}\\Beat Saber_Data\\CustomLevels\\${songs[i]}\\metadata.dat`, 'utf-8'))
+    hashes.push(metadata.hash)
+  }
+  callback(hashes)
+}

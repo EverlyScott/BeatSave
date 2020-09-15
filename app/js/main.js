@@ -4,7 +4,6 @@ const mainProcess = remote.require('../../src/js/node.js');
 var config = undefined;
 
 updateConfig(() => {
-  setInnerHTML('text', JSON.stringify(config))
   if (config.installationLocation == "") {
     location.replace('selectgamefolder/index.html')
   }
@@ -21,5 +20,16 @@ function updateConfig(callback) {
   mainProcess.updateConfig((json) => {
     config = json
     callback()
+  })
+}
+
+function loadSongs() {
+  mainProcess.loadSongHashes((hashes) => {
+    var songs = []
+    for (var i = 0; i < hashes.length; i++) {
+      mapDetail(hashes[i], (info) => {
+        songs.push(info)
+      })
+    }
   })
 }

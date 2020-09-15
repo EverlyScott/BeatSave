@@ -1,4 +1,4 @@
-const apiurl = 'https://www.beatsaver.com/api' //DO NOT include a trailing slash!
+const apiurl = 'https://beatsaver.com/api' //DO NOT include a trailing slash!
 
 function loadJSON(url, callback) {
   var xobj = new XMLHttpRequest()
@@ -13,22 +13,13 @@ function loadJSON(url, callback) {
 }
 
 //download
-function downloadKey(key) {
-  location.replace(`${apiurl}/download/key/${key}`)
-}
 
-function downloadHash(hash) {
+function download(hash) {
   location.replace(`${apiurl}/download/hash/${hash}`)
 }
 
 //maps
-function mapDetail(key, callback) {
-  loadJSON(`${apiurl}/maps/detail/${key}`, (res) => {
-    callback(JSON.parse(res))
-  })
-}
-
-function mapDetailHash(hash, callback) {
+function mapDetail(hash, callback) {
   loadJSON(`${apiurl}/maps/by-hash/${hash}`, (res) => {
     callback(JSON.parse(res))
   })
@@ -78,13 +69,7 @@ function search(query, page, callback) {
 }
 
 //stats
-function statsKey(key, callback) {
-  loadJSON(`${apiurl}/stats/key/${key}`, (res) => {
-    callback(JSON.parse(res))
-  })
-}
-
-function statsHash(hash, callback) {
+function stats(hash, callback) {
   loadJSON(`${apiurl}/stats/by-hash/${hash}`, (res) => {
     callback(JSON.parse(res))
   })

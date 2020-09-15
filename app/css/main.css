@@ -1,0 +1,14 @@
+:root {
+  font-family: arial;
+}
+
+body {
+  margin: 0 0 0 0;
+}
+
+.sidepanel {
+  width: calc(250px - 30px);
+  height: calc(100vh - 50px);
+  background-color: #cccccc;
+  padding: 25px 15px 25px 15px;
+}
