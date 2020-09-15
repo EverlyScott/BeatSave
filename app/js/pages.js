@@ -7,7 +7,7 @@ const bsplaylists = document.getElementById('bsplaylists')
 function changePage(page) {
   switch(page) {
     case 'dlsongs':
-      pageiframe.src ='https://www.scribblenerd.com'
+      pageiframe.src ='dlsongs/index.html'
       resetPageColors()
       dlsongs.classList = 'page selected'
       break;
