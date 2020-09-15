@@ -5,6 +5,9 @@ var config = undefined
 
 mainProcess.updateConfig((newconfig) => {
   config = newconfig
+  if (config.installationLocation != "") {
+    location.replace('../index.html')
+  }
 })
 
 function openfolderselection() {
