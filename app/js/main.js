@@ -2,6 +2,7 @@ const { remote } = require('electron');
 const mainProcess = remote.require('../../src/js/node.js');
 
 var config = undefined;
+var songs = []
 
 updateConfig(() => {
   if (config.installationLocation == "") {
@@ -24,12 +25,15 @@ function updateConfig(callback) {
 }
 
 function loadSongs() {
+  songs = []
   mainProcess.loadSongHashes((hashes) => {
-    var songs = []
     for (var i = 0; i < hashes.length; i++) {
       mapDetail(hashes[i], (info) => {
         songs.push(info)
       })
+    }
+    for (var i = 0; i < songs.length; i++) {
+      
     }
   })
 }
