@@ -89,6 +89,7 @@ function createWindow() {
 
 function offlineMode() {
   console.log('Starting in offline mode')
+  mainWindow.webContents.executeJavaScript('offlineMode()')
 }
 
 function updateConfig() {
