@@ -1,6 +1,7 @@
 const electron = require('electron')
 const { shell, dialog } = require('electron')
 const fs = require('fs');
+const ping = require('node-http-ping')
 const app = electron.app;
 const Menu = electron.Menu;
 const BrowserWindow = electron.BrowserWindow;
@@ -59,9 +60,35 @@ function createWindow() {
     }
   })
   mainWindow.loadFile('app/index.html');
+  ping('https://beatsaver.com').catch(() => {
+    const options = {
+      type: 'error',
+      buttons: ['Continue in offline mode', 'Reload', 'Exit'],
+      defaultId: 2,
+      title: 'Error',
+      message: 'Error',
+      detail: 'Error contacting beatsaver.com\nPlease chech your network connection and try again.'
+    }
+    dialog.showMessageBox(null, options).then((res) => {
+      if (res.response == 0) {
+        offlineMode()
+      }
+      if (res.response == 1) {
+        createWindow()
+        BrowserWindow.getFocusedWindow().close()
+      }
+      if (res.response == 2) {
+        process.exit()
+      }
+    })
+  })
   mainWindow.on('closed', () => {
     mainWindow = null;
   })
+}
+
+function offlineMode() {
+  console.log('Starting in offline mode')
 }
 
 function updateConfig() {

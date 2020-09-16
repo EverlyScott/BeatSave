@@ -13,7 +13,6 @@ function loadJSON(url, callback) {
 }
 
 //download
-
 function download(hash) {
   location.replace(`${apiurl}/download/hash/${hash}`)
 }
