@@ -56,7 +56,8 @@ function createWindow() {
     resizable: true,
     webPreferences: {
       nodeIntegration: true,
-      enableRemoteModule: true
+      enableRemoteModule: true,
+      nodeIntegrationInSubFrames: true
     }
   })
   mainWindow.loadFile('app/index.html');
