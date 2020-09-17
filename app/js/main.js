@@ -23,17 +23,3 @@ function updateConfig(callback) {
     callback()
   })
 }
-
-function loadSongs() {
-  songs = []
-  mainProcess.loadSongHashes((hashes) => {
-    for (var i = 0; i < hashes.length; i++) {
-      mapDetail(hashes[i], (info) => {
-        songs.push(info)
-      })
-    }
-    for (var i = 0; i < songs.length; i++) {
-      
-    }
-  })
-}
