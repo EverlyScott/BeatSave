@@ -1,4 +1,5 @@
-const apiurl = 'https://beatsaver.com/api' //DO NOT include a trailing slash!
+const beatsaverurl = 'https://beatsaver.com' //DO NOT include a trailing slash!
+const apiurl = `${beatsaverurl}/api` //DO NOT include a trailing slash!
 
 function loadJSON(url, callback) {
   var xobj = new XMLHttpRequest()
@@ -7,6 +8,11 @@ function loadJSON(url, callback) {
   xobj.onreadystatechange = () => {
     if (xobj.readyState == 4 & xobj.status == "200") {
       callback(xobj.responseText)
+    }
+  }
+  xobj.onloadend = () => {
+    if (xobj.status == 404) {
+      callback(404)
     }
   }
   xobj.send(null)

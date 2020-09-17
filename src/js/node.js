@@ -64,7 +64,7 @@ function createWindow() {
   ping('https://beatsaver.com').catch(() => {
     const options = {
       type: 'error',
-      buttons: ['Continue in offline mode', 'Reload', 'Exit'],
+      buttons: ['Reload', 'Exit'],
       defaultId: 2,
       title: 'Error',
       message: 'Error',
@@ -72,13 +72,10 @@ function createWindow() {
     }
     dialog.showMessageBox(null, options).then((res) => {
       if (res.response == 0) {
-        offlineMode()
-      }
-      if (res.response == 1) {
         createWindow()
         BrowserWindow.getFocusedWindow().close()
       }
-      if (res.response == 2) {
+      if (res.response == 1) {
         process.exit()
       }
     })
@@ -126,4 +123,46 @@ exports.loadSongHashes = (callback) => {
     hashes.push(metadata.hash)
   }
   callback(hashes)
+}
+
+exports.getSongInfo = (hash, callback) => {
+  const songs = fs.readdirSync(`${config.installationLocation}\\Beat Saber_Data\\CustomLevels`)
+  for (var i = 0; i < songs.length; i++) {
+    const metadata = JSON.parse(fs.readFileSync(`${config.installationLocation}\\Beat Saber_Data\\CustomLevels\\${songs[i]}\\metadata.dat`, 'utf-8'))
+    const currentsong = JSON.parse(fs.readFileSync(`${config.installationLocation}\\Beat Saber_Data\\CustomLevels\\${songs[i]}\\info.dat`, 'utf-8'))
+    if (currentsong.hash == hash) {
+      callback({
+        metadata: {
+          duration: 0,
+          automapper: null,
+          levelAuthorName: currentsong._levelAuthorName,
+          songAuthorName: currentsong._songAuthorName,
+          songName: currentsong._songName,
+          songSubName: currentsong._songSubName,
+          bpm: currentsong._beatsPerMinute
+        },
+        stats: {
+          downloads: 0,
+          plays: 0,
+          downVotes: 0,
+          upVotes: 0,
+          heat: 0,
+          rating: 0
+        },
+        description: "Local map (not downloaded from BeatSaver or BeastSaber)",
+        deletedAt: null,
+        _id: null,
+        name: `${currentsong._songAuthorName} - ${currentsong._songName}`,
+        uploader: {
+          _id: null,
+          username: "Local Song"
+        },
+        hash: hash,
+        uploaded: Date.now(),
+        directDownload: `/api/download/hash/${hash}`,
+        downlodURL: `/api/download/hash/${hash}`,
+        coverURL: `${config.installationLocation}\\Beat Saber_Data\\CustomLevels\\${songs[i]}\\${currentsong.coverImageFilename}`
+      })
+    }
+  }
 }
