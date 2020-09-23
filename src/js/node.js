@@ -119,7 +119,13 @@ exports.loadSongHashes = (callback) => {
   const songs = fs.readdirSync(`${config.installationLocation}\\Beat Saber_Data\\CustomLevels`)
   var hashes = []
   for (var i = 0; i < songs.length; i++) {
-    const metadata = JSON.parse(fs.readFileSync(`${config.installationLocation}\\Beat Saber_Data\\CustomLevels\\${songs[i]}\\metadata.dat`, 'utf-8'))
+    var metadata
+    try {
+      metadata = JSON.parse(fs.readFileSync(`${config.installationLocation}\\Beat Saber_Data\\CustomLevels\\${songs[i]}\\metadata.dat`, 'utf-8'))
+    } catch {
+      fs.writeFileSync(`${config.installationLocation}\\Beat Saber_Data\\CustomLevels\\${songs[i]}\\metadata.dat`, '{"hash":"nohash"}')
+      metadata = JSON.parse(fs.readFileSync(`${config.installationLocation}\\Beat Saber_Data\\CustomLevels\\${songs[i]}\\metadata.dat`, 'utf-8'))
+    }
     hashes.push(metadata.hash)
   }
   callback(hashes)
@@ -128,10 +134,16 @@ exports.loadSongHashes = (callback) => {
 exports.getSongInfo = (hash, callback) => {
   const songs = fs.readdirSync(`${config.installationLocation}\\Beat Saber_Data\\CustomLevels`)
   for (var i = 0; i < songs.length; i++) {
-    const metadata = JSON.parse(fs.readFileSync(`${config.installationLocation}\\Beat Saber_Data\\CustomLevels\\${songs[i]}\\metadata.dat`, 'utf-8'))
-    const currentsong = JSON.parse(fs.readFileSync(`${config.installationLocation}\\Beat Saber_Data\\CustomLevels\\${songs[i]}\\info.dat`, 'utf-8'))
-    if (currentsong.hash == hash) {
-      callback({
+    var metadata
+    try {
+      metadata = JSON.parse(fs.readFileSync(`${config.installationLocation}\\Beat Saber_Data\\CustomLevels\\${songs[i]}\\metadata.dat`, 'utf-8'))
+    } catch {
+      fs.writeFileSync(`${config.installationLocation}\\Beat Saber_Data\\CustomLevels\\${songs[i]}\\metadata.dat`, '{"hash":"nohash"}')
+      metadata = JSON.parse(fs.readFileSync(`${config.installationLocation}\\Beat Saber_Data\\CustomLevels\\${songs[i]}\\metadata.dat`, 'utf-8'))
+    }
+    if (metadata.hash == hash) {
+      const currentsong = JSON.parse(fs.readFileSync(`${config.installationLocation}\\Beat Saber_Data\\CustomLevels\\${songs[i]}\\info.dat`, 'utf-8'))
+      const json = {
         metadata: {
           duration: 0,
           automapper: null,
@@ -154,15 +166,16 @@ exports.getSongInfo = (hash, callback) => {
         _id: null,
         name: `${currentsong._songAuthorName} - ${currentsong._songName}`,
         uploader: {
-          _id: null,
+          _id: "0",
           username: "Local Song"
         },
         hash: hash,
         uploaded: Date.now(),
-        directDownload: `/api/download/hash/${hash}`,
-        downlodURL: `/api/download/hash/${hash}`,
-        coverURL: `${config.installationLocation}\\Beat Saber_Data\\CustomLevels\\${songs[i]}\\${currentsong.coverImageFilename}`
-      })
+        directDownload: null,
+        downlodURL: null,
+        coverURL: `${config.installationLocation}\\Beat Saber_Data\\CustomLevels\\${songs[i]}\\${currentsong._coverImageFilename}`
+      }
+      callback(json)
     }
   }
 }
