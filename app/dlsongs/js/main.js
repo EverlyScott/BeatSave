@@ -1,5 +1,6 @@
 const { remote } = require('electron')
 const mainProcess = remote.require('../../src/js/node.js')
+const $ = require('jquery')
 
 var songs = []
 
@@ -9,7 +10,7 @@ function loadSongs() {
     console.groupCollapsed('The following 404 errors (if any) are handled and do not mean anything. Please expand for more info.')
     console.log('It just means that the song does not exist on BeatSaver, this could be due to having a custom or converted map. The app handles this by reading the info files from your game folder.')
     console.groupEnd()
-    for (var i = 0; i < hashes.length; i++) {
+    for (let i = 0; i < hashes.length; i++) {
       const currenthash = hashes[i]
       mapDetail(currenthash, (info) => {
         if (info == 404) {
@@ -18,11 +19,11 @@ function loadSongs() {
           songs.push(info)
         }
         if (songs.length == hashes.length) {
-          for (var i = 0; i < songs.length; i++) {
+          for (let i = 0; i < songs.length; i++) {
             if (songs[i].error == 404) {
               mainProcess.getSongInfo(songs[i].hash, (json) => {
-                console.log(JSON.stringify(json))
                 var template = document.getElementById('songstemplate')
+
                 var song = template.content.cloneNode(true)
                 song.getElementById('img').src = `file://${json.coverURL}`
                 song.getElementById('name').innerText = json.metadata.songName
@@ -44,25 +45,50 @@ function loadSongs() {
   })
 }
 
-loadSongs()
+function sortSongs(type) {
+  songs.sort((a, b) => {
+    if (a.error == 404 || b.error == 404) {
+      nohashsort(a, b)
+    } else {
+      hashsort(a, b)
+    }
+  })
 
-function compareValues(key, order = 'asc') {
-  return function innerSort(a, b) {
-    if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
-      return 0
+  function hashsort(a, b) {
+    if (a.metadata.songName < b.metadata.songName) {
+      return a
+    } else {
+      return b
     }
-    const varA = (typeof a[key] === 'string')
-      ? a[key].toUpperCase() : a[key]
-    const varB = (typeof b[key] === 'string')
-      ? b[key].toUpperCase : b[key]
-    let comparison = 0;
-    if (varA > varB) {
-      comparison = 1
-    } else if (varA < varB) {
-      comparison = -1
+  }
+
+  function nohashsort(a, b) {
+    if (a.hash == 'nohash') {
+      return b
+    } else if (b.hash == 'nohash') {
+      return a
+    } else if (a.error == 404) {
+      mainProcess.getSongInfo(a.hash, (json) => {
+        console.log(json)
+        if (json.metadata.songName < b.metadata.songName) {
+          return a
+        } else {
+          return b
+        }
+      })
+    } else if (b.error == 404) {
+      mainProcess.getSongInfo(b.hash, (json) => {
+        if (a.metadata.songName < json.metadata.songName) {
+          return a
+        } else {
+          return b
+        }
+      })
     }
-    return (
-      (order === 'desc') ? (comparison * -1) : comparison
-    )
   }
 }
+
+loadSongs()
+setTimeout(() => {
+  sortSongs()
+},1000)
